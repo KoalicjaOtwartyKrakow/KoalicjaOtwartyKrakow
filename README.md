@@ -23,48 +23,9 @@ To better streamline volunteers' workflow the need is for dedicated software tha
 
 ## Use of IETF Keywords
 
-This document employs a subset of the Internet Engineering Task Force keywords found in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119). These words are MUST, SHOULD, MAY and their counterparts MUST NOT, SHOULD NOT, MAY NOT. They are capitalized throughout the document to draw attention to their special status as keywords used to indicate requirements levels.
+This document employs a subset of the Internet Engineering Task Force keywords found in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119). These words are MUST, SHALL, SHOULD, MAY and their counterparts MUST NOT, SHOULD NOT, MAY NOT. They are capitalized throughout the document to draw attention to their special status as keywords used to indicate requirements levels.
 
 Readers are directed to interpret them as requirements at levels consistent with their term of art definitions in the IETF [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
-
-## Scenarios
-
-The system needs to support the following scenarios:
-
-### As a Guest
-
-In the beta version, there are no Guest scenarios.
-
-## As a Volunteer 
-
-* 
-
-* I want to list Accommodation Units
-    * Filter by the following criteria:
-        * Type
-        * Location
-        * Capacity
-        * …
-    * See the occupancy status (as difference between the capacity and the number of occupants).
-* I want to list and filter Guests (criteria?)
-    * In this context, filter and sort the list of applicable Accommodation Units
-* I want to assign an Accommodation Unit to a Guest
-    * After picking a Guest from the list, see a list of available Accommodation Units that would fulfill requirements of a given Guest
-    * See detailed information of the Guest side by side with the list of Accommodation Units
-* I want to inspect a newly registered host and accommodation unit
-    * See a checklist of subtasks
-    * Mark subtasks as done (and/or provide additional comments?)
-* I want to check in with a Guest after a given period of time
-    * See a checklist of subtasks
-    * Mark subtasks as done (and/or provide additional comments?)
-
-## As a Host (Priority: 2)
-
-In the beta version there are no Host scenarios.
-
-## As a System Administrator
-
-* I want to be able to import data from Salam Lab's legacy database in Google Spreadsheet.
 
 ## Assumptions
 
@@ -139,3 +100,83 @@ The application interfaces with the following applications/systems:
 2. Backed MAY expose REST API for authenticated 3rd party users.
 3. REST API MUST be defined using Swagger 2.0 specification. Version 2.0 is the highest OpenAPI version supported by [Cloud Endpoints](https://cloud.google.com/endpoints/docs/openapi)
 4. REST API OpenAPI definition must be available in root folder of [backend's git repository](https://github.com/KoalicjaOtwartyKrakow/backend/blob/main/api.yaml)
+
+## Scenarios
+
+The system needs to support the following scenarios:
+
+### As a Guest
+
+In the beta version, there are no Guest scenarios.
+
+### As a Volunteer
+
+#### I want to list all Guests
+
+1. System MUST be able to list all *Guests*
+2. System SHALL use summary information view when listing all *Guests*
+3. System MUST allow user to see detailed view of selected *Guest* with all information.
+4. System SHALL show *Full Name* in summary view
+5. System SHALL show *Desired Location* in summary view
+6. System SHALL show *Priority Status* in summary view
+7. System SHALL show *Priority Date* in summary view
+8. System SHALL show *Verification Status* in summary view
+9. If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Verification Status*, *Priority Status*, and *Priority Date*
+10. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*: Verified, Created, and Rejected.
+11. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*: in_crisis_point, in_krakow, en_route_poland, en_route_ukraine, accommodation_found, accommodation_not_needed 
+12. If not specified otherwise, System SHALL use ascending order while sorting by *Priority Date*.
+13. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
+14. System MUST be able to filter *Guests* by *Verification Status*.
+15. System MUST be able to filter *Guests* by *Desired Location*.
+16. System MUST be able to filter *Guests* by *Priority Status*.
+17. System MUST be able to filter *Guests* by *Full Name*
+
+#### I want to list all Accommodation Units
+
+1. System MUST be able to list all *Accommodation Units*
+2. System SHALL use summary information view when listing all *Accommodation Units*
+3. System MUST allow user to see detailed view of selected *Accommodation Unit* with all information.
+4. System SHALL show *City* in summary view
+5. System SHALL show *Full Address* in summary view
+6. System SHALL show *Is LGBT Friendly* property in summary view
+7. System SHALL show *Does Accept Pets* property in summary view
+8. System SHALL show "Easy Ambulance Access" property in summary view
+9. System SHALL show "Verification Status" is summary view
+10. System SHALL show *Occupancy Status* as both *Vacancies Taken* and *Vacancies Free*
+11. System SHALL use color coding to visually highlight *Occupancy Status*.
+12. System SHALL use green color code for *Accommodation Unit* with all vacancies free.
+13. System SHALL use red color code for *Accommodation Unit* with no vacancies left.
+14. System MAY use yellow color code for *Accommodation Unit* with less than half vacancies left.
+15. If not specified otherwise, System SHALL by default return the list of *Accommodation Units* sorted by *Verification Status* and *Vacancies Free*. 
+16. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*:  Verified, Created, and Rejected.
+17. If not specified otherwise, System SHALL use descending order while sorting by *Vacancies Free*
+18. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
+19. System MUST be able to filter *Accommodation Units* by *Verification Status*.
+20. System MUST be able to filter *Accommodation Units* by *City*.
+21. System MUST be able to filter *Accommodation Units* by *Occupancy Status*. Free, Partially occupied, Fully occupied.
+
+#### I want to find an Accommodation Unit matching Guests' needs
+
+1. System MUST be able to list *Accommodation Units* matching *Guest*'s needs
+2. System SHALL mark *Accommodation Units* as matching if *Vacancies Free* property is greater or equal than *People in Group* property of *Guest*.
+
+#### I want to assign Accommodation Unit to Guest
+
+1. System MUST be able to assign *Guest* to *Accommodation Unit*
+2. System MUST NOT assign *Guest* to *Accommodation Unit* if *Vacancies Free* property of *Accommodation Unit* is less than *People in Group* property of *Guest*
+3. On successful assignment System SHALL adjust *Vacancies Free* property of *Accommodation Unit*
+4. On successful assignment System SHALL set *Guest*'s *Priority Status* to *accommodation_found*.
+
+### As a Host (Priority: 2)
+
+In the beta version there are no Host scenarios.
+
+### As a System Administrator
+
+#### I want to be able to import data from external sources
+
+1. System MUST provide interface for uploading CSV files
+2. System MUST convert data found in Salam Lab's legacy database in Google Spreadsheet into current system's data model.
+3. System MUST be able to correlate data from import with existing data
+4. System MUST be able to identify and reject duplicate entries
+5. System MUST report the entries rejected during import
