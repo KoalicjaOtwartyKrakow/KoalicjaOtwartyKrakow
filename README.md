@@ -121,10 +121,10 @@ In the beta version, there are no Guest scenarios.
 6. System SHALL show *Priority Status* in summary view
 7. System SHALL show *Priority Date* in summary view
 8. System SHALL show *Verification Status* in summary view
-9. System SHALL show "Food Allergies" in summary view
-10. System SHALL show "Meat-free diet" in summary view
-11. System SHALL show "Gluten-free diet" in summary view
-12. System SHALL show "Lactose-free diet" in summary view
+9. System SHALL show *Food Allergies* in summary view
+10. System SHALL show *Meat-free diet* in summary view
+11. System SHALL show *Gluten-free diet* in summary view
+12. System SHALL show *Lactose-free diet* in summary view
 13. If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Verification Status*, *Priority Status*, and *Priority Date*
 14. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*: Verified, Created, and Rejected.
 15. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*: in_crisis_point, in_krakow, en_route_poland, en_route_ukraine, accommodation_found, accommodation_not_needed 
@@ -173,7 +173,7 @@ In the beta version, there are no Guest scenarios.
 3. On successful assignment System SHALL adjust *Vacancies Free* property of *Accommodation Unit*
 4. On successful assignment System SHALL set *Guest*'s *Priority Status* to *accommodation_found*.
 
-### As a Host (Priority: 2)
+### As a Host
 
 In the beta version there are no Host scenarios.
 
