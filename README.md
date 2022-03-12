@@ -109,31 +109,36 @@ The system needs to support the following scenarios:
 
 In the beta version, there are no Guest scenarios.
 
-### As a Volunteer
+### As a Team Member
 
 #### I want to list all Guests
 
-1. System MUST be able to list all *Guests*
+1. System MUST be able to list all *Guests*: [#B27](backend-27)
 2. System SHALL use summary information view when listing all *Guests*
-3. System MUST allow user to see detailed view of selected *Guest* with all information.
-4. System SHALL show *Full Name* in summary view
-5. System SHALL show *Desired Location* in summary view
-6. System SHALL show *Priority Status* in summary view
-7. System SHALL show *Priority Date* in summary view
-8. System SHALL show *Verification Status* in summary view
-9. System SHALL show *Food Allergies* in summary view
-10. System SHALL show *Meat-free diet* in summary view
-11. System SHALL show *Gluten-free diet* in summary view
-12. System SHALL show *Lactose-free diet* in summary view
-13. If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Verification Status*, *Priority Status*, and *Priority Date*
-14. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*: Verified, Created, and Rejected.
-15. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*: in_crisis_point, in_krakow, en_route_poland, en_route_ukraine, accommodation_found, accommodation_not_needed 
-16. If not specified otherwise, System SHALL use ascending order while sorting by *Priority Date*.
-17. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
-18. System MUST be able to filter *Guests* by *Verification Status*.
-19. System MUST be able to filter *Guests* by *Desired Location*.
-20. System MUST be able to filter *Guests* by *Priority Status*.
-21. System MUST be able to filter *Guests* by *Full Name*
+3. System SHALL show *Full Name* in summary view
+4. System SHALL show *Desired Location* in summary view
+5. System SHALL show *Priority Status* in summary view
+6. System SHALL show *Priority Date* in summary view
+7. System SHALL show *Verification Status* in summary view
+8. System SHALL show *Food Allergies* in summary view
+9. System SHALL show *Meat-free diet* in summary view
+10. System SHALL show *Gluten-free diet* in summary view
+11. System SHALL show *Lactose-free diet* in summary view
+12. If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Verification Status*, *Priority Status*, and *Priority Date*
+13. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*: Verified, Created, and Rejected.
+14. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*: in_crisis_point, in_krakow, en_route_poland, en_route_ukraine, accommodation_found, accommodation_not_needed 
+15. If not specified otherwise, System SHALL use ascending order while sorting by *Priority Date*.
+16. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
+17. System MUST be able to filter *Guests* by *Verification Status*.
+18. System MUST be able to filter *Guests* by *Desired Location*.
+19. System MUST be able to filter *Guests* by *Priority Status*.
+20. System MUST be able to filter *Guests* by *Full Name*
+
+[backend-27]: https://github.com/KoalicjaOtwartyKrakow/backend/issues/27
+
+#### I want to see details of selected Guest
+
+1. System MUST allow user to see detailed view of selected *Guest* with all information.
 
 #### I want to list all Accommodation Units
 
