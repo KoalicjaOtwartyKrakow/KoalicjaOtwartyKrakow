@@ -40,9 +40,9 @@ Readers are directed to interpret them as requirements at levels consistent with
 The system needs to be able to verify the identity of the *Host*. The project does not aim at providing solution to this problem as there are vendors in the market offering such solutions.
 
 Considered options are:
-- Blue Media 1pln money transfer loop, openbanking-based verification, "Selfie"-biometrics verification, Liveness check biometric verification.
-- Authologic - banking KYC, 1gr money transfer loop, "Selfie" biometrics, email verification, polish cell number verification, foreign cell number verification, digital id w/ PIN, digital ID w/o PIN.
-- Autenti
+- [Blue Media](https://bluemedia.pl/) - 1pln money transfer loop, openbanking-based verification, "Selfie"-biometrics verification, Liveness check biometric verification.
+- [Authologic](https://authologic.com/pl) - banking KYC, 1gr money transfer loop, "Selfie" biometrics, email verification, polish cell number verification, foreign cell number verification, digital id w/ PIN, digital ID w/o PIN.
+- [Autenti](https://autenti.com/pl/) - the offer seemed to include only e-signature verification, and didn't suit project needs.
 
 ## Risks
 
@@ -115,68 +115,79 @@ In the beta version, there are no Guest scenarios.
 
 1. System MUST be able to list all *Guests*: [#B27](backend-27)
 2. System SHALL use summary information view when listing all *Guests*
-3. System SHALL show *Full Name* in summary view
-4. System SHALL show *Desired Location* in summary view
-5. System SHALL show *Priority Status* in summary view
-6. System SHALL show *Priority Date* in summary view
-7. System SHALL show *Verification Status* in summary view
-8. System SHALL show *Food Allergies* in summary view
-9. System SHALL show *Meat-free diet* in summary view
-10. System SHALL show *Gluten-free diet* in summary view
-11. System SHALL show *Lactose-free diet* in summary view
-12. If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Verification Status*, *Priority Status*, and *Priority Date*
-13. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*: Verified, Created, and Rejected.
-14. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*: in_crisis_point, in_krakow, en_route_poland, en_route_ukraine, accommodation_found, accommodation_not_needed 
-15. If not specified otherwise, System SHALL use ascending order while sorting by *Priority Date*.
-16. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
-17. System MUST be able to filter *Guests* by *Verification Status*.
-18. System MUST be able to filter *Guests* by *Desired Location*.
-19. System MUST be able to filter *Guests* by *Priority Status*.
-20. System MUST be able to filter *Guests* by *Full Name*
+3. In summary information view the system SHALL show:
+   + *Full Name*
+   + *Desired Location*
+   + *Priority Status*
+   + *Priority Date*
+   + *Verification Status* 
+   + *Food Allergies* 
+   + *Meat-free diet* 
+   + *Gluten-free diet* 
+   + *Lactose-free diet*
+4. If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Verification Status*, *Priority Status*, and *Priority Date*
+5. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*: Verified, Created, and Rejected.
+6. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*: in_crisis_point, in_krakow, en_route_poland, en_route_ukraine, accommodation_found, accommodation_not_needed 
+7. If not specified otherwise, System SHALL use ascending order while sorting by *Priority Date*.
+8. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
+9. System MUST be able to filter *Guests* by *Verification Status*.
+10. System MUST be able to filter *Guests* by *Desired Location*.
+11. System MUST be able to filter *Guests* by *Priority Status*.
+12. System MUST be able to filter *Guests* by *Full Name*
 
 [backend-27]: https://github.com/KoalicjaOtwartyKrakow/backend/issues/27
 
 #### I want to see details of selected Guest
 
 1. System MUST allow user to see detailed view of selected *Guest* with all information.
+2. System SHOULD include information on *Accommodation Unit* assigned to given *Guest*.
 
 #### I want to list all Accommodation Units
 
 1. System MUST be able to list all *Accommodation Units*
 2. System SHALL use summary information view when listing all *Accommodation Units*
-3. System MUST allow user to see detailed view of selected *Accommodation Unit* with all information.
-4. System SHALL show *City* in summary view
-5. System SHALL show *Full Address* in summary view
-6. System SHALL show *LGBT Friendly* property in summary view
-7. System SHALL show *Does Accept Pets* property in summary view
-8. System SHALL show "Easy Ambulance Access" property in summary view
-9. System SHALL show "Parking Place Available" property in summary view
-10. System SHALL show "Disabled People Friendly" property in summary view
-11. System SHALL show "Verification Status" is summary view
-12. System SHALL show *Occupancy Status* as both *Vacancies Taken* and *Vacancies Free*
-13. System SHALL use color coding to visually highlight *Occupancy Status*.
-14. System SHALL use green color code for *Accommodation Unit* with all vacancies free.
-15. System SHALL use red color code for *Accommodation Unit* with no vacancies left.
-16. System MAY use yellow color code for *Accommodation Unit* with less than half vacancies left.
-17. If not specified otherwise, System SHALL by default return the list of *Accommodation Units* sorted by *Verification Status* and *Vacancies Free*. 
-18. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*:  Verified, Created, and Rejected.
-19. If not specified otherwise, System SHALL use descending order while sorting by *Vacancies Free*
-20. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
-21. System MUST be able to filter *Accommodation Units* by *Verification Status*.
-22. System MUST be able to filter *Accommodation Units* by *City*.
-23. System MUST be able to filter *Accommodation Units* by *Occupancy Status*. Free, Partially occupied, Fully occupied.
+3. In summary information view the system SHALL show:
+   + *City*
+   + *Full Address*
+   + *LGBT Friendly*
+   + *Does Accept Pets*
+   + "Easy Ambulance Access"
+   + "Parking Place Available"
+   + "Disabled People Friendly" 
+   + "Verification Status"
+3. System SHALL show *Occupancy Status* as both *Vacancies Taken* and *Vacancies Free*
+4. System SHALL use color coding to visually highlight *Occupancy Status*.
+5. System SHALL use green color code for *Accommodation Unit* with all vacancies free.
+6. System SHALL use red color code for *Accommodation Unit* with no vacancies left.
+7. System MAY use yellow color code for *Accommodation Unit* with less than half vacancies left.
+8. If not specified otherwise, System SHALL by default return the list of *Accommodation Units* sorted by *Verification Status* and *Vacancies Free*. 
+9. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*:  Verified, Created, and Rejected.
+10. If not specified otherwise, System SHALL use descending order while sorting by *Vacancies Free*
+11. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
+12. System MUST be able to filter *Accommodation Units* by *Verification Status*.
+13. System MUST be able to filter *Accommodation Units* by *City*.
+14. System MUST be able to filter *Accommodation Units* by *Occupancy Status*. Free, Partially occupied, Fully occupied.
+
+##### I want to see details of selected Accommodation Unit
+
+1. System MUST allow user to see detailed view of selected *Accommodation Unit* with all information.
+2. System SHOULD include information on assigned *Guests* to given *Accommodation Unit*.
 
 #### I want to find an Accommodation Unit matching Guests' needs
 
 1. System MUST be able to list *Accommodation Units* matching *Guest*'s needs
 2. System SHALL mark *Accommodation Units* as matching if *Vacancies Free* property is greater or equal than *People in Group* property of *Guest*.
 
-#### I want to assign Accommodation Unit to Guest
+#### I want to assign Guest to Accommodation Unit
 
 1. System MUST be able to assign *Guest* to *Accommodation Unit*
 2. System MUST NOT assign *Guest* to *Accommodation Unit* if *Vacancies Free* property of *Accommodation Unit* is less than *People in Group* property of *Guest*
 3. On successful assignment System SHALL adjust *Vacancies Free* property of *Accommodation Unit*
 4. On successful assignment System SHALL set *Guest*'s *Priority Status* to *accommodation_found*.
+5. System SHALL detect and reject attempts to add same *Guest* to *Accommodation Unit* more than once, returning `405` status code to the caller.
+
+#### I want to be notified of outstanding Guests
+
 
 ### As a Host
 
