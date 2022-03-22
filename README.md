@@ -85,11 +85,31 @@ No organizational, training, documentation or process impacts have been identifi
 
 ![SalamLab Backoffice Concept Diagram](./koncepcja.png)
 
+Description of steps:
+1. Organization admin adds user to User Directory
+2. Reception volunteer navigates to Guest Registration Form
+   * a/ Web-based form is served
+   * b/ When form is submitted, a REST API is called
+   * c/ Data is stored in the database
+3. Apartment Team Volunteer navigates to the Admin Panel
+   * a/ Admin Panel forces user to authenticate with their organization
+4. Volunteer verifies the data of *Guest* using Guest Module of Admin Panel
+5. Volunteer verifies the data of *Accommodation* using Accommodation Module of Admin Panel
+6. Volunteer verifies the data of *Host* using Host Module of Admin Panel
+7. Volunteer navigates to *Guest* details, searches for the matching appartment and assigns it to the *Guest*
 
-Application MUST be deployed to three separate environments: *Development*, *Staging* and *Production*.
+### User Interface
 
-Neither *Development* nor *Staging* environment MUST NOT include PII data. It SHOULD include synthetic data for realism and validation purposes.
+### Services
 
+#### API
+
+1. Services MUST expose dedicated REST API for the User Interface.
+2. Services MAY expose REST API for authenticated 3rd party users.
+3. REST API MUST be defined using Swagger 2.0 specification. Version 2.0 is the highest OpenAPI version supported by [Cloud Endpoints](https://cloud.google.com/endpoints/docs/openapi)
+
+
+### Deployment Diagram
 
 ![SalamLab Backoffice Architecture](./architektura.png)
 
@@ -97,7 +117,11 @@ The application interfaces with the following applications/systems:
 
 1. **GitHub** - Application's Continuous Integration/Continuous Deployment process observes GitHub master branch, and development branch
 
-## Security
+### Availability
+
+1. The system SHOULD have availability of 95%.
+
+### Security
 
 1. GCP Secrets Manager service MUST be used to secure the User ID/passwords (Database, etc.). The credentials MUST be retrieved during startup but cached in RAM to avoid repeated dip into the Secrets Manager.
 2. There MUST be RBAC (Role Based Access Controls) to Cloud SQL.
@@ -105,24 +129,17 @@ The application interfaces with the following applications/systems:
 4. There MUST be strong RBAC around Secrets.
 5. There MUST be data encryption at rest in Cloud SQL for any sensitive information in *Production* environment.
 
-## API
-
-1. Backend MUST expose dedicated REST API for the frontend.
-2. Backed MAY expose REST API for authenticated 3rd party users.
-3. REST API MUST be defined using Swagger 2.0 specification. Version 2.0 is the highest OpenAPI version supported by [Cloud Endpoints](https://cloud.google.com/endpoints/docs/openapi)
-4. REST API OpenAPI definition must be available in root folder of [backend's git repository](https://github.com/KoalicjaOtwartyKrakow/backend/blob/main/api.yaml)
-
-## Scenarios
+### Scenarios
 
 The system needs to support the following scenarios:
 
-### As a Guest
+#### As a Guest
 
 In the beta version, there are no Guest scenarios.
 
-### As a Team Member
+#### As a Team Member
 
-#### I want to list all Guests
+##### I want to list all Guests
 
 1. System MUST be able to list all *Guests*: [#B27](backend-27)
 2. System SHALL use summary information view when listing all *Guests*
@@ -148,12 +165,12 @@ In the beta version, there are no Guest scenarios.
 
 [backend-27]: https://github.com/KoalicjaOtwartyKrakow/backend/issues/27
 
-#### I want to see details of selected Guest
+##### I want to see details of selected Guest
 
 1. System MUST allow user to see detailed view of selected *Guest* with all information.
 2. System SHOULD include information on *Accommodation Unit* assigned to given *Guest*.
 
-#### I want to list all Accommodation Units
+##### I want to list all Accommodation Units
 
 1. System MUST be able to list all *Accommodation Units*
 2. System SHALL use summary information view when listing all *Accommodation Units*
@@ -179,17 +196,17 @@ In the beta version, there are no Guest scenarios.
 13. System MUST be able to filter *Accommodation Units* by *City*.
 14. System MUST be able to filter *Accommodation Units* by *Occupancy Status*. Free, Partially occupied, Fully occupied.
 
-##### I want to see details of selected Accommodation Unit
+###### I want to see details of selected Accommodation Unit
 
 1. System MUST allow user to see detailed view of selected *Accommodation Unit* with all information.
 2. System SHOULD include information on assigned *Guests* to given *Accommodation Unit*.
 
-#### I want to find an Accommodation Unit matching Guests' needs
+##### I want to find an Accommodation Unit matching Guests' needs
 
 1. System MUST be able to list *Accommodation Units* matching *Guest*'s needs
 2. System SHALL mark *Accommodation Units* as matching if *Vacancies Free* property is greater or equal than *People in Group* property of *Guest*.
 
-#### I want to assign Guest to Accommodation Unit
+##### I want to assign Guest to Accommodation Unit
 
 1. System MUST be able to assign *Guest* to *Accommodation Unit*
 2. System MUST NOT assign *Guest* to *Accommodation Unit* if *Vacancies Free* property of *Accommodation Unit* is less than *People in Group* property of *Guest*
@@ -197,19 +214,33 @@ In the beta version, there are no Guest scenarios.
 4. On successful assignment System SHALL set *Guest*'s *Priority Status* to *accommodation_found*.
 5. System SHALL detect and reject attempts to add same *Guest* to *Accommodation Unit* more than once, returning `405` status code to the caller.
 
-#### I want to be notified of outstanding Guests
+##### I want to be notified of outstanding Guests
 
 
-### As a Host
+#### As a Host
 
 In the beta version there are no Host scenarios.
 
-### As a System Administrator
+#### As a System Administrator
 
-#### I want to be able to import data from external sources
+##### I want to be able to import data from external sources
 
 1. System MUST provide interface for uploading CSV files
 2. System MUST convert data found in Salam Lab's legacy database in Google Spreadsheet into current system's data model.
 3. System MUST be able to correlate data from import with existing data
 4. System MUST be able to identify and reject duplicate entries
 5. System MUST report the entries rejected during import
+
+## Data Architecture
+
+1. All operational data SHALL be stored in Cloud SQL database
+2. All reporting data MAY be stored in Cloud SQL or Cloud Storage at discretion of DevOps team
+
+## Infrastructure Architecture
+
+### Separation of Environments
+
+1. Application MUST be deployed to three separate environments: *Development*, *Staging* and *Production*.
+   2, Neither *Development* nor *Staging* environment MUST NOT include PII data. It SHOULD include synthetic data for realism and validation purposes.
+2. Application components that handle PII data MUST be deployed in EU
+3. External system which exchange PII data with Application must be configurable with EU region for data storage.
