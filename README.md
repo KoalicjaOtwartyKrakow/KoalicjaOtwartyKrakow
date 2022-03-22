@@ -10,43 +10,49 @@ Today, members and volunteers at Crisis Point manage the database in a Google Sp
 
 To better streamline volunteers' workflow the need is for dedicated software that optimizes flow and display of information, and enforce validation rules for people offering help, before they're connected with people in need. This need would also benefit the workflow of other organizations managing crisis situations.
 
-
-## Glossary of terms
-
-**Host** — a person who offers accommodation for people in need.
-
-**Guest** — a person who uses the accommodation provided by the Host.
-
-**Team Member** — verified member of organization with escalated privileges that manages the process of connecting *Host* with *Guest* and ensures that all safety protocols are observed.
-
-**Accommodation Unit** — a house/apartment/room owned by the *Host* and made available to *Guests*
-
 ## Use of IETF Keywords
 
 This document employs a subset of the Internet Engineering Task Force keywords found in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119). These words are MUST, SHALL, SHOULD, MAY and their counterparts MUST NOT, SHOULD NOT, MAY NOT. They are capitalized throughout the document to draw attention to their special status as keywords used to indicate requirements levels.
 
 Readers are directed to interpret them as requirements at levels consistent with their term of art definitions in the IETF [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
 
-## Assumptions
+## Business Architecture
 
-## Constraints
+### Capabilities
+
+Provide backoffice functionality for Radziwiłłowska 3 Crisis Point.
+
+### Glossary of terms
+
+* **Host** — a person who offers accommodation for people in need.
+
+* **Guest** — a person who uses the accommodation provided by the Host.
+
+* **Team Member** — verified member of organization with escalated privileges that manages the process of connecting *Host* with *Guest* and ensures that all safety protocols are observed.
+
+* **Accommodation Unit** — a house/apartment/room owned by the *Host* and made available to *Guests*
+
+### Assumptions
+
+1. System is not going to enforce strict validation rule for information stored, except for Personally Identifiable Information of both *Guest* and *Host* required to ensure safety of all parties.
+
+### Constraints
 
 1. Applicable GDPR laws: https://gdpr-info.eu/
 
-## Dependencies
+### Dependencies
 
-### Identity verification
-
-The system needs to be able to verify the identity of the *Host*. The project does not aim at providing solution to this problem as there are vendors in the market offering such solutions.
-
+1. The system needs to be able to verify the identity of the *Host*. The project does not aim at providing solution to this problem as there are vendors in the market offering such solutions. \
+\
 Considered options are:
-- [Blue Media](https://bluemedia.pl/) - 1pln money transfer loop, openbanking-based verification, "Selfie"-biometrics verification, Liveness check biometric verification.
-- [Authologic](https://authologic.com/pl) - banking KYC, 1gr money transfer loop, "Selfie" biometrics, email verification, polish cell number verification, foreign cell number verification, digital id w/ PIN, digital ID w/o PIN.
-- [Autenti](https://autenti.com/pl/) - the offer seemed to include only e-signature verification, and didn't suit project needs.
+   - [Blue Media](https://bluemedia.pl/) - 1pln money transfer loop, openbanking-based verification, "Selfie"-biometrics verification, Liveness check biometric verification.
+   - [Authologic](https://authologic.com/pl) - banking KYC, 1gr money transfer loop, "Selfie" biometrics, email verification, polish cell number verification, foreign cell number verification, digital id w/ PIN, digital ID w/o PIN.
+   - [Autenti](https://autenti.com/pl/) - the offer seemed to include only e-signature verification, and didn't suit project needs.
 
 ## Risks
 
 ### Business Risks
+1. Having large amount of PII data available to indivituals could lead to data leakage/loss. To mitigate this, access to backoffice system SHOULD be periodically audited by organization. To support this, backoffice system SHALL not introduce own AuthN user database, but SHALL use external directories managed by the organization.
 
 ### Technical Risks
 
@@ -60,20 +66,20 @@ No organizational, training, documentation or process impacts have been identifi
 
 ### Frontend
 
-- Node.js 14.x
+- Node.js 16.x LTS
 - React
 
 ### Backend
 
 - Python 3.9
+- SqlAlchemy
 - Google Cloud Functions Framework
-
 
 ### Database
 
 - PostgreSQL 13
 
-## Architecture
+## Application Architecture
 
 Application MUST be deployed to three separate environments: *Development*, *Staging* and *Production*.
 
