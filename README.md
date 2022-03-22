@@ -26,7 +26,7 @@ Provide backoffice functionality for Radziwiłłowska 3 Crisis Point.
 
 * **Host** — a person who offers accommodation for people in need.
 
-* **Guest** — a person who uses the accommodation provided by the Host.
+* **Guest** — a person or representative of a group (including men, women, children and pets) that uses the accommodation provided by the Host.
 
 * **Team Member** — verified member of organization with escalated privileges that manages the process of connecting *Host* with *Guest* and ensures that all safety protocols are observed.
 
@@ -98,15 +98,120 @@ Description of steps:
 6. Volunteer verifies the data of *Host* using Host Module of Admin Panel
 7. Volunteer navigates to *Guest* details, searches for the matching appartment and assigns it to the *Guest*
 
+### Scenarios
+
+The system needs to support the following scenarios:
+
+#### As a Guest
+
+In the beta version, there are no Guest scenarios.
+
+
+#### As a Team Member
+
+##### ... I want to access Admin Panel
+
+Admin Panel's landing page SHALL provide means to navigate to three availalbe modules: *Guest*, *Host* and *Accommodation*. Selecting *Guest* module SHALL open a *Guest* listing page providing summary of all *Guests* in the system. Similarly, selecting *Host* or *Accommodation* modules SHALL open listing page of *Hosts* and *Accommodations* respectively.
+
+##### ... I want to list all Guests
+
+*Guests* listing page SHALL provide description of icon status indicators:
+   - Meat-free diet - does *Guest* require meat-free diet
+   - Food allergies - does *Guest* have any food allergies
+   - Gluten-free diet - does *Guest* require gluten-free diet
+   - Lactose-free diet - does *Guest* require lactose-free diet
+
+*Guests* listing page SHALL provide summary information of all *Guests* in the system in a tabular form, including columns:
+   - Full name - First Name and Last Name of the *Guest*.
+   - Phone number - Including international and local prefixes
+   - Status - Priority status of a Guest. This can be one of the following:
+     * Does not respond - after initial registration, volunteers were unable to contact the *Guest*
+     * Accommodation not needed - legacy, deprecated value, *Guest* were registered for another reason. Can be found in imported data.
+     * En route in Ukraine - *Guest* is traveling, still in Ukraine
+     * En route in Poland - *Guest* successfully crossed the border, and is traveling to Kraków
+     * In Kraków - *Guest* is here
+     * At Radziwiłłowska 3 - *Guest* is in Crisis Response Center. Immediate attention required.
+     * Accommodation Found - *Guest* is fine for now. This can change tho.
+     * Updated - legacy, deprecated value, can be found in imported data.
+   - Priority - when accommodation is required
+   - How many - How many people are in the group. This should be split into Total, Men, Women, and Children count.
+   - How long - for how long a stay is required. Row order of magnitude.
+   - Remarks - The field SHALL include both icons representing *Food Allergies*, *Meat-free diet*, *Gluten-free diet*, *Lactose-free diet* as well as free-form notes from the *Guest*.
+
+If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Priority Status*, and *Priority Date*. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*:
+   - At Radziwiłłowska 3
+   - Updated
+   - In Kraków
+   - En route in Poland
+   - En route in Kraków
+   - Does not respond
+   - Accommodation Found
+   - Accommodation Not Needed 
+If not specified otherwise, System SHALL use ascending order while sorting by *Priority Date*. 
+
+Upon selecting a row, a Guest Details screen MUST be shown.
+
+##### ... I want to see Guest Details
+
+System MUST allow user to see detailed view of selected *Guest* with all information. The information SHOULD be broken down in logical groups:
+- Personal data:
+  * Priority Status
+  * Full Name
+  * E-mail
+  * Phone
+- Stay Information:
+  * Priority Date
+  * Stay duration
+  * Desired destination
+- Number of people
+  * Total number of people in the group
+  * The number of men
+  * The number of women
+  * The number of children, with the age for each child.
+- Additional information
+  * Information if *Guest* has pets
+  * Detailed free-form detailed information on pets
+  * Financial status - if *Guest* can afford to pay any rent, and if so - how much
+  * Document number - number of the Passport, Id, Birth Certificate - any document they used to cross the border
+  * Information if *Guest* is an agent - in data coming from Reception Desk at Radziwiłłowska 3, each person is registered as separate *Guest*, and an *Agent* is a person that acts as a proxy for a group of individually registered people.
+- Detailed information
+  * Special needs
+  * Dietary information - information about *Meet-free*, *Gluten-free* and/or *Lactose-free* diet
+  * Food allergies - free-form text description of any other restrictions and allergies a *Guest* has
+
+Detailed *Guest* view SHALL include Accommodation Assignment information.
+
+##### I want to assign Guest to Accommodation Unit
+
+*Guest* detail view shall provide means to search for available *Accommodation Units*. If *Accommodation Unit* is assigned to a *Guest* and Team Member attempts to search for other *Accommodation Units* an Application SHALL warn the Team Member that current *Accommodation Unit* MAY be removed.
+
+When presenting the Team Member with *Accommodation Units* matching search criteria, the Application SHALL show:
+- Full Address - including Street name, Building and Apartment numbers where applicable, Zip code, City and Voivodeship name
+- *Host* contact details including:
+    * Full Name
+    * Email
+    * Phone number
+    * Preferred hours to contact
+- Verification status
+- Accommodation's vacancy information
+
+When presenting list of *Accommodation Units* matching search criteria for the *Guest* the Application SHALL sort the results by:
+- Verification Status - in order of Verified, Verification Pending, Rejected
+- Vacancies Free
+
 ### User Interface
+
+User Interface SHOULD be branded with logos of organizations involved in operating and developing the system:
+- [Laboratorium Pokoju - Salam Lab](http://salamlab.pl)
+- [UA in Kraków - Fundacja Instytut Polska-Ukraina](http://uainkrakow.pl)
+- [Fundacja Zustricz](http://zustricz.pl)
+- [Koalicja Otwarty Kraków](http://koalicjaotwartykrakow.pl)
 
 ### Services
 
 #### API
 
-1. Services MUST expose dedicated REST API for the User Interface.
-2. Services MAY expose REST API for authenticated 3rd party users.
-3. REST API MUST be defined using Swagger 2.0 specification. Version 2.0 is the highest OpenAPI version supported by [Cloud Endpoints](https://cloud.google.com/endpoints/docs/openapi)
+Services MUST expose dedicated REST API for the User Interface. They MAY expose REST API for authenticated 3rd party users. All REST API endpoints MUST be defined using Swagger 2.0 specification. Version 2.0 is the highest OpenAPI version supported by [Cloud Endpoints](https://cloud.google.com/endpoints/docs/openapi)
 
 
 ### Deployment Diagram
@@ -119,117 +224,11 @@ The application interfaces with the following applications/systems:
 
 ### Availability
 
-1. The system SHOULD have availability of 95%.
+The system SHOULD have availability of 95%.
 
 ### Security
 
-1. GCP Secrets Manager service MUST be used to secure the User ID/passwords (Database, etc.). The credentials MUST be retrieved during startup but cached in RAM to avoid repeated dip into the Secrets Manager.
-2. There MUST be RBAC (Role Based Access Controls) to Cloud SQL.
-3. Cloud SQL MUST have internal IP address only. Connections to Cloud SQL MUST be done via *Bastion Host*.
-4. There MUST be strong RBAC around Secrets.
-5. There MUST be data encryption at rest in Cloud SQL for any sensitive information in *Production* environment.
-
-### Scenarios
-
-The system needs to support the following scenarios:
-
-#### As a Guest
-
-In the beta version, there are no Guest scenarios.
-
-#### As a Team Member
-
-##### I want to list all Guests
-
-1. System MUST be able to list all *Guests*: [#B27](backend-27)
-2. System SHALL use summary information view when listing all *Guests*
-3. In summary information view the system SHALL show:
-   + *Full Name*
-   + *Desired Location*
-   + *Priority Status*
-   + *Priority Date*
-   + *Verification Status* 
-   + *Food Allergies* 
-   + *Meat-free diet* 
-   + *Gluten-free diet* 
-   + *Lactose-free diet*
-4. If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Verification Status*, *Priority Status*, and *Priority Date*
-5. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*: Verified, Created, and Rejected.
-6. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*: in_crisis_point, in_krakow, en_route_poland, en_route_ukraine, accommodation_found, accommodation_not_needed 
-7. If not specified otherwise, System SHALL use ascending order while sorting by *Priority Date*.
-8. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
-9. System MUST be able to filter *Guests* by *Verification Status*.
-10. System MUST be able to filter *Guests* by *Desired Location*.
-11. System MUST be able to filter *Guests* by *Priority Status*.
-12. System MUST be able to filter *Guests* by *Full Name*
-
-[backend-27]: https://github.com/KoalicjaOtwartyKrakow/backend/issues/27
-
-##### I want to see details of selected Guest
-
-1. System MUST allow user to see detailed view of selected *Guest* with all information.
-2. System SHOULD include information on *Accommodation Unit* assigned to given *Guest*.
-
-##### I want to list all Accommodation Units
-
-1. System MUST be able to list all *Accommodation Units*
-2. System SHALL use summary information view when listing all *Accommodation Units*
-3. In summary information view the system SHALL show:
-   + *City*
-   + *Full Address*
-   + *LGBT Friendly*
-   + *Does Accept Pets*
-   + "Easy Ambulance Access"
-   + "Parking Place Available"
-   + "Disabled People Friendly" 
-   + "Verification Status"
-3. System SHALL show *Occupancy Status* as both *Vacancies Taken* and *Vacancies Free*
-4. System SHALL use color coding to visually highlight *Occupancy Status*.
-5. System SHALL use green color code for *Accommodation Unit* with all vacancies free.
-6. System SHALL use red color code for *Accommodation Unit* with no vacancies left.
-7. System MAY use yellow color code for *Accommodation Unit* with less than half vacancies left.
-8. If not specified otherwise, System SHALL by default return the list of *Accommodation Units* sorted by *Verification Status* and *Vacancies Free*. 
-9. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*:  Verified, Created, and Rejected.
-10. If not specified otherwise, System SHALL use descending order while sorting by *Vacancies Free*
-11. Backend SHOULD provide synthetic *Priority* property calculated based on sorting requirements.
-12. System MUST be able to filter *Accommodation Units* by *Verification Status*.
-13. System MUST be able to filter *Accommodation Units* by *City*.
-14. System MUST be able to filter *Accommodation Units* by *Occupancy Status*. Free, Partially occupied, Fully occupied.
-
-###### I want to see details of selected Accommodation Unit
-
-1. System MUST allow user to see detailed view of selected *Accommodation Unit* with all information.
-2. System SHOULD include information on assigned *Guests* to given *Accommodation Unit*.
-
-##### I want to find an Accommodation Unit matching Guests' needs
-
-1. System MUST be able to list *Accommodation Units* matching *Guest*'s needs
-2. System SHALL mark *Accommodation Units* as matching if *Vacancies Free* property is greater or equal than *People in Group* property of *Guest*.
-
-##### I want to assign Guest to Accommodation Unit
-
-1. System MUST be able to assign *Guest* to *Accommodation Unit*
-2. System MUST NOT assign *Guest* to *Accommodation Unit* if *Vacancies Free* property of *Accommodation Unit* is less than *People in Group* property of *Guest*
-3. On successful assignment System SHALL adjust *Vacancies Free* property of *Accommodation Unit*
-4. On successful assignment System SHALL set *Guest*'s *Priority Status* to *accommodation_found*.
-5. System SHALL detect and reject attempts to add same *Guest* to *Accommodation Unit* more than once, returning `405` status code to the caller.
-
-##### I want to be notified of outstanding Guests
-
-
-#### As a Host
-
-In the beta version there are no Host scenarios.
-
-#### As a System Administrator
-
-##### I want to be able to import data from external sources
-
-1. System MUST provide interface for uploading CSV files
-2. System MUST convert data found in Salam Lab's legacy database in Google Spreadsheet into current system's data model.
-3. System MUST be able to correlate data from import with existing data
-4. System MUST be able to identify and reject duplicate entries
-5. System MUST report the entries rejected during import
+GCP Secrets Manager service MUST be used to secure the User ID/passwords (Database, etc.). The credentials MUST be retrieved during startup but cached in RAM to avoid repeated dip into the Secrets Manager. There MUST be RBAC (Role Based Access Controls) to Cloud SQL, and very strong RBAC around Secrets. Cloud SQL MUST have internal IP address only. Connections to Cloud SQL MUST be done via *Cloud Proxy* for increased security and session timeouts. There MUST be data encryption at rest in Cloud SQL for any sensitive information in *Production* environment.
 
 ## Data Architecture
 
