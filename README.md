@@ -81,6 +81,11 @@ No organizational, training, documentation or process impacts have been identifi
 
 ## Application Architecture
 
+### Conceptual Diagram
+
+![SalamLab Backoffice Concept Diagram](./koncepcja.png)
+
+
 Application MUST be deployed to three separate environments: *Development*, *Staging* and *Production*.
 
 Neither *Development* nor *Staging* environment MUST NOT include PII data. It SHOULD include synthetic data for realism and validation purposes.
