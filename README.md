@@ -17,7 +17,7 @@ In the wake of the Russian invasion of Ukraine, hundreds of thousands of people 
 ## Development
 
 - [Requirements](https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/blob/main/requirements/)
-- [Developer Documentation](http://https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/blob/main/CONTRIBUTING.md)
+- [Developer Documentation](https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/blob/main/CONTRIBUTING.md)
 
 ## License
 
