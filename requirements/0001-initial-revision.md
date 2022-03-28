@@ -129,6 +129,43 @@ None.
 4. `AccommodationUnits` table SHALL be created with at least following fields:
     - `guid` which is a UUIDv4 compatibile Primary Key
     - `host_id` which is an UUIDv4 compatibile Foreign Key into `Hosts` table
+    - `city` which is a string
+    - `zip` which is a string, for postal code
+    - `voivodeship` which is an enum:
+        - DOLNOSLASKIE
+        - KUJAWSKOPOMORSKIE 
+        - LUBELSKIE
+        - LUBUSKIE
+        - LODZKIE
+        - MALOPOLSKIE
+        - MAZOWIECKIE
+        - OPOLSKIE
+        - PODKARPACKIE
+        - PODLASKIE
+        - POMORSKIE
+        - SLASKIE
+        - SWIETOKRZYSKIE
+        - WARMINSKOMAZURSKIE
+        - WIELKOPOLSKIE
+        - ZACHODNIOPOMORSKIE
+    - `address_line` which is a string, including street name, street and apartment number
+    - `vacancies_total` which is a number
+    - `pets_present` which is a boolean. True SHALL indicate animals in apartment.
+    - `pets_accepted` which is a boolean. True SHALL indicate that animals are welcome in apartment.
+    - `disabled_people_friendly` which is a boolean. True SHALL indicate that apartment can be accessed and used by people with disabilities
+    - `lgbt_friendly` which is a boolean. True SHALL indicate that apartment is safe space for LGBT+ people
+    - `parking_place_available` which is a boolean. True SHALL indicate that *Guests* can come by car and will have a place to park it.
+    - `owner_comments` which is a text field, for *Host* comments.
+    - `easy_ambulance_access` which is a boolean. True SHALL indicate that appartment can be used by paliative care *Guests*, and people that do not necessarily require hospitalization, but their health condition may require immediate transport to the hospital.
+    - `vacancies_free` which is a number
+    - `staff_comments` which is a text field, for comments of *Team Members*
+    - `status` which is an enum:
+        - CREATED - verification process was not finished
+        - VERIFIED - verification was successful
+        - REJECTED - verification failed
+    - `created_at` which is a timestamp
+    - `updated_at` which is a timestamp
+    - `system_comments` which is a text field, for any automated import and/or validation comments
 5. Data tables MAY include additional fields if needed by internals of the Services.
 
 
