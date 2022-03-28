@@ -12,7 +12,7 @@ In the wake of the Russian invasion of Ukraine, hundreds of thousands of people 
 
 ## Project Pages
 
-- [Glossary](http://https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/blob/main/GLOSSARY.md)
+- [Glossary](https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/blob/main/GLOSSARY.md)
 
 ## Development
 
