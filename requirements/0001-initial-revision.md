@@ -194,14 +194,13 @@ The system needs to support the following scenarios:
 
 #### As a Guest
 
-In the beta version, there are no Guest scenarios.
-
+In the initial release version, there are no Guest scenarios.
 
 #### As a Team Member
 
 ##### ... I want to access Admin Panel
 
-Admin Panel's landing page SHALL provide means to navigate to three availalbe modules: *Guest*, *Host* and *Accommodation*. Selecting *Guest* module SHALL open a *Guest* listing page providing summary of all *Guests* in the system. Similarly, selecting *Host* or *Accommodation* modules SHALL open listing page of *Hosts* and *Accommodations* respectively.
+Admin Panel's landing page SHALL provide means to navigate to three available modules: *Guest*, *Host* and *Accommodation*. Selecting *Guest* module SHALL open a *Guest* listing page providing summary of all *Guests* in the system. Similarly, selecting *Host* or *Accommodation* modules SHALL open listing page of *Hosts* and *Accommodations* respectively.
 
 ##### ... I want to list all Guests
 
@@ -226,7 +225,7 @@ Admin Panel's landing page SHALL provide means to navigate to three availalbe mo
    - Priority - when accommodation is required
    - How many - How many people are in the group. This should be split into Total, Men, Women, and Children count.
    - How long - for how long a stay is required. Row order of magnitude.
-   - Remarks - The field SHALL include both icons representing *Food Allergies*, *Meat-free diet*, *Gluten-free diet*, *Lactose-free diet* as well as free-form notes from the *Guest*.
+   - Remarks - The field SHALL include both icons representing *Food Allergies*, *Meat-free diet*, *Gluten-free diet*, *Lactose-free diet* and free-form notes from the *Guest*.
 
 If not specified otherwise, System SHALL by default return the list of *Guests* sorted by *Priority Status*, and *Priority Date*. If not specified otherwise, System SHALL use following order while sorting by *Priority Status*:
    - At Radziwiłłowska 3
@@ -271,6 +270,12 @@ System MUST allow user to see detailed view of selected *Guest* with all informa
 
 Detailed *Guest* view SHALL include Accommodation Assignment information.
 
+Detailed *Guest* view SHALL include "Save Changes" button. When -- and only when -- users clicks on "Save Changes" the system SHALL store updated information.
+
+Detailed *Guest* view SHALL include "Reset Changes" button. When users clicks on "Reset Changes" the system SHALL restore data in editable controls.
+
+Detailed *Guest* view SHALL include "Back to the list" button. When users clicks on "Back to the list" button Host List screen MUST be shown.
+
 ##### I want to assign Guest to Accommodation Unit
 
 *Guest* detail view shall provide means to search for available *Accommodation Units*. If *Accommodation Unit* is assigned to a *Guest* and Team Member attempts to search for other *Accommodation Units* an Application SHALL warn the Team Member that current *Accommodation Unit* MAY be removed.
@@ -288,6 +293,102 @@ When presenting the Team Member with *Accommodation Units* matching search crite
 When presenting list of *Accommodation Units* matching search criteria for the *Guest* the Application SHALL sort the results by:
 - Verification Status - in order of Verified, Verification Pending, Rejected
 - Vacancies Free
+
+##### ... I want to list all Hosts
+
+*Hosts* listing page SHALL provide summary information of all *Hosts* in the system in a tabular form, including columns:
+- Full name - First Name and Last Name of the *Guest*.
+- Phone number - Including international and local prefixes
+- Languages spoken - information on which languages the host can communicate in
+- Verification status - Status of the identity verification of the *Host*. This can be one of the following:
+  - Verification pending - identity of the *Host* is not verified
+  - Verified - identity of the *Host* was successfully verified
+  - Rejected - either identity of the *Host* was not verified, or the verification came back negative.
+- Comments - remarks from the *Host* themselves. 
+
+If not specified otherwise, System SHALL by default return the list of *Hosts* sorted by *Verification Status*. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*:
+- Verified
+- Verification Pending
+- Rejected
+
+Upon selecting a row, a Host Details screen MUST be shown.
+
+##### ... I want to see Host Details
+
+System MUST allow user to see detailed view of selected *Host* with all information. The information SHOULD be broken down in logical groups:
+- Contact information:
+    * Verification status
+    * Full Name
+    * E-mail
+    * Phone
+    * Call after 
+    * Call before
+- Additional Information:
+    * Comments
+    * Languages spoken
+
+Detailed *Host* view SHALL include "Save Changes" button. When -- and only when -- users clicks on "Save Changes" the system SHALL store updated information.
+
+Detailed *Host* view SHALL include "Reset Changes" button. When users clicks on "Reset Changes" the system SHALL restore data in editable controls.
+
+Detailed *Host* view SHALL include "Back to the list" button. When users clicks on "Back to the list" button Host List screen MUST be shown.
+
+##### ... I want to list all Accommodation Units
+
+*Accommodation Units* listing page SHALL provide description of icon status indicators:
+- Pets Allowed - can *Guests* with *Animals* stay in *Accommodation Unit*
+- Pets Present - are there *Animals* in *Accommodation Unit*
+- Disabled People Friendly - is *Accommodation Unit* accessible and suitable for people with disabilities
+- LGBT Friendly - is *Accommodation Unit* accepting non-cis people
+- Parking Place Available - will *Guests* with their own cars have a place to park theirs machine.
+- Easy Ambulance Access - for *Guests* needing palliative care, or in general with health condition that may require sudden transport to a hospital, will an ambulance have easy time picking them if needed.
+
+*Accommodation Units* listing page SHALL provide summary information of all *Accommodation Units* in the system in a tabular form, including columns:
+- City - Full city name.
+- Address - This field SHALL include full address line, together with postal code, city name and voivodeship information.
+- Status - ?
+- Capacity - this SHALL reflect the remaining capacity of an *Accommodation Unit*.
+- Description - remarks from the *Team Member* on the *Accommodation Unit*
+- Information - The field SHALL include icons representing *Pets Allowed*, *Pets Present*, *Disabled People Friendly*, *LGBT Friendly*, *Parking Place Available*, and *Easy Ambulance Access*.
+
+If not specified otherwise, System SHALL by default return the list of *Hosts* sorted by *Verification Status*. If not specified otherwise, System SHALL use following order while sorting by *Verification Status*:
+- Verified
+- Verification Pending
+- Rejected
+
+Upon selecting a row, a Host Details screen MUST be shown.
+
+##### ... I want to see Accommodation Unit Details
+
+System MUST allow user to see detailed view of selected *Accommodation Unit* with all information. The information SHOULD be broken down in logical groups:
+- Accommodation data:
+    * Address - a street name with street and appartment number, where available.
+    * City
+    * Voivodeship
+    * Zip code - also known as Postal Code.
+- Additional Information:
+    * Volunteer Notes
+    * Host Comments
+- Vacancies Information
+    * Total available places
+    * Places taken by guests - The system SHALL not enforce modification of *Places taken* automatically on assigning a *Guest*.
+    * Verification Status - This SHALL be one of the following:
+      - Verified
+      - Verification Pending
+      - Rejected
+- Detailed Information:
+  - Pets present
+  - Pets accepted
+  - Disabled People Friendly
+  - LGBT Friendly
+  - Parking Place Available
+  - Easy Ambulance Access.
+
+Detailed *Host* view SHALL include "Save Changes" button. When -- and only when -- users clicks on "Save Changes" the system SHALL store updated information.
+
+Detailed *Host* view SHALL include "Reset Changes" button. When users clicks on "Reset Changes" the system SHALL restore data in editable controls.
+
+Detailed *Host* view SHALL include "Back to the list" button. When users clicks on "Back to the list" button Host List screen MUST be shown.
 
 ### User Interface
 
