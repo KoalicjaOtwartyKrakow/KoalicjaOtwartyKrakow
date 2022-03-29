@@ -1,4 +1,4 @@
-- Start Date: 2022-03-01
+- Start Date: 2022-03-26
 - RFC PR: https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/pull/4
 - KOK:on Issue: https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/issues/3
 
@@ -179,4 +179,4 @@ For DEV environment, following fields SHALL be sanitized with generated data:
 
 ## Infrastructure Architecture
 
-No impcat.
+No impact.
