@@ -56,10 +56,8 @@ None.
 
 `Guests`, `Hosts` and `AccommodationUnits` tables shall have a new text field `system_comments` where data will be placed as free text in case system cannot convert the data into the target form.
 
-Table `Hosts` SHALL have new fields:
-- `for_how_long` - `\d+(d|w|m|y)`
-
 Table `AccommodationUnit` SHALL have following changes:
+- New field `for_how_long` - `\d+(d|w|m|y)`
 - Field `status` SHALL be renamed to `verification_status`
 - New field `workflow_status` SHALL be created as enum with following values:
   - Available 
