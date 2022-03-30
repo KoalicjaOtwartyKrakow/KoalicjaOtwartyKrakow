@@ -59,6 +59,14 @@ None.
 Table `Hosts` SHALL have new fields:
 - `for_how_long` - `\d+(d|w|m|y)`
 
+Table `AccommodationUnit` SHALL have following changes:
+- Field `status` SHALL be renamed to `verification_status`
+- New field `workflow_status` SHALL be created as enum with following values:
+  - Available 
+  - Needs verification - The *AccommodationUnit* information might be outdated. *TeamMember* SHOULD call a *Host* to verify the status and information.
+  - Withdrawn - The *Host* has withdrawn the consent.
+  - Done - The *AccommodationUnit* is considered filled up. Moving to this status SHALL not be automated, because *AccommodationUnit* may have free vacancies that are technically useless (i.e. 2 beds were for children, even tho technically there is 1 bed left, but no other *Guest* may be assigned there), and *AccommodationUnit* should be removed from the pool even tho there are some vacancies left.
+
 Data SHALL be imported from two main Google Spreadsheets: `[salam] Mieszkania (Polska)` and `[salam] Ludzi (Ukrainska)`.
 
 Mapping of tab `Automated Mieszkania` in `[salam] Mieszkania (Polska)` SHALL be as follows:
@@ -68,8 +76,14 @@ Mapping of tab `Automated Mieszkania` in `[salam] Mieszkania (Polska)` SHALL be 
   - Values matching a pattern `\d+\s?(d|w|m|y)` SHALL be placed in `acommodation_units.for_how_long`
   - Other values SHALL be appended to `acommodation_units.system_comments`
 - Column `D` *KIM jest juz zajety? (ID czlowieka)* contents SHALL be used to match appropriate *Guest*. Generated UUIDv4 GUID for current *AccommodationUnit* SHALL  be placed in `guest.accommodation_unit_id` of a *Guest* with matching Column A value.
-- Column `E` *WOLONTARIUSZ (kto się kontaktował)* contents SHALL be ignored.
-- Column `F` *STATUS* contents SHALL be appended to `acommodation_units.system_comments`
+- Column `E` *WOLONTARIUSZ (kto się kontaktował)* contents will be used to set `workflow_status` to either `Available` if not empty, and `Needs verification` otherwise.
+- Column `F` *STATUS* contents SHALL be converted to `workflow_status` such that:
+  - `OUT` will be converted to `Withdrawn`
+  - `DONE` will be converted to `Done`
+  - `AVAILABLE` and empty will be converted to `Available`
+  - `HOLD` will be converted to `Needs verification`
+  - `CHANGED` will be converted to `Needs verification`
+  - `Przjęcie krótkoterminowe` will be converted to `Available` if Column `E` is not empty, otherwise `Needs verification`
 - Column `G` *Timestamp* shall be converted to UNIX timestamp and placed in `acommodation_units.created_at` and `hosts.created_at`
 - Column `H` SHALL be ignored.
 - Column `I` *Miasto lokalu* contents SHALL be placed in `acommodation_units.city`
@@ -85,9 +99,6 @@ Mapping of tab `Automated Mieszkania` in `[salam] Mieszkania (Polska)` SHALL be 
 - Column `R` *Jakie znasz języki?* SHALL be matched against languages *Polski*, *Ukraiński*, *Rosyjski*, *Angielski* and appropriate entries SHALL be added to `host_languages` table. Regardless of the matching, contents of the column SHALL be appended to `host.system_comments`
 - Column `W` *Jeśli masz jakieś pytania, uwagi lub dodatkowe komentarze, na które nie znalazł_ś miejsca w formularzu, napisz je proszę poniżej:* contents SHALL be appended to `accommodation_unit.owner_comments`.
 
-Contents of columns appended to `system_comments` SHALL be properly annotated with a name of the column in Google Spreadsheet, and a note that this is a value that didn't make it through the data import process.
-
-
 Mapping of tab `Ludzi` in `[salam] Ludzi (Ukrainska)` SHALL be as follows:
 - Column `A` contents SHALL be noted, and used to match current *Guest* with appropriate entry in Column "KIM jest juz zajety? (ID czlowieka)" of *AccommodationUnits*.
 - Column `B` contents SHALL be ignored
@@ -95,7 +106,10 @@ Mapping of tab `Ludzi` in `[salam] Ludzi (Ukrainska)` SHALL be as follows:
 - Column `D` *STATUS* contents SHALL be converted to `guests.priority_status`
 - Column `E` *imie i nazwisko wolontariusza* contents SHALL be appended to `guests.system_comments`
 - Column `F` *Imie i Nazwisko* contents SHALL be placed in `guests.full_name`
-- Column `G` *Telefon (z kodem kierunkowym)* contents shall be placed in `guests.phone_number`
+- Column `G` *Telefon (z kodem kierunkowym)* contents SHALL  be placed in `guests.phone_number`, such that:
+  - whitespaces SHALL be trimed
+  - digits SHALL be grouped in threes.
+  - if phone number consist of more than 9 digits, prefix SHALL be extracted and formatted with `+`.
 - Column `H` *Priorytet* contents SHALL be converted into UNIX timestamp and placed in `guests.priority_date`
 - Column `I` *TOTAL Ilość osób* contents SHALL be placed in `guests.people_in_group`
 - Column `J` *Dorosly* contents SHALL be ignored, as there is no reliable way to decide how many women and men are there.
@@ -124,8 +138,8 @@ Mapping of tab `UPD Data from Reception` in `[salam] Ludzi (Ukrainska)` SHALL be
 - Column `H` *Numer dokumentu | Номер паспорту (ID)* contents SHALL be placed in `guests.document_number`
 - Column `I` *Ile osób potrzebują zakwaterowania? | Скільки осіб потребують житла? [Mężczyźni | Чоловіки]* contents SHALL be placed in `guests.adult_male_count`
 - Column `J` *Ile osób potrzebują zakwaterowania? | Скільки осіб потребують житла? [Kobiety | Жінки]* contents SHALL be placed in `guests.adult_female_count`
-- Sum of values in Column `I` and Column `J` SHALL be placed in `guests.people_in_group`
 - Column `K` *Ile osób potrzebują zakwaterowania? | Скільки осіб потребують житла? [Dzieci | Діти]* contents SHALL be converted into an array with the number of elements specified by the value in the cell. The array SHALL have all `0`s, as the process of extraction children ages is not reliable
+- Sum of values in Column `I`, Column `J` and Column `K` SHALL be placed in `guests.people_in_group`
 - Column `L` *Wiek dziecka (dzieci) | Вік дитини (дітей)* contents SHALL be appended to `guests.system_comments`
 - Column `M` *Wiek dorosłej osoby (osób) | Вік дорослої особи (осіб)* contents SHALL be appended to `guests.system_comments`
 - Column `N` *Zwierzęta domowe | Домашні тварини [Pies | Собака]* contents if non-empty SHALL set `guests.have_pets` value to `True` and SHALL append *Pies* to `guests.pets_description`
@@ -138,8 +152,12 @@ Mapping of tab `UPD Data from Reception` in `[salam] Ludzi (Ukrainska)` SHALL be
 - Column `V` *Od jakiej daty  jest potrzebne zakwaterowanie? | Від якого числа (дати) потрібне житло?* contents SHALL be converted to UNIX timestamp and placed in `guests.priority_date`
 - Column `W` *Notatki i komentarze dotyczące zwierząt domowych, zakwaterowania, stanu zdrowia, edukacji itd (opcjonalnie) | Нотатки і коментарі відносно домашніх тварин, житла, стану здоров"я, освіти та інше* contents SHALL be appended to `guests.staff_comments`
 - Column `X` *Czy osoba zostaje na noc w naszym punkcie pomocy przy ul. Radziwiłłowska 3? | Чи особа залишається в нашому пункті допомоги на Radziwiłłowska 3?* contents SHALL be ignored
-- Column `Y` *Numer telefonu (wolontariusza akceptującego zgłoszenie) | Номер телефону (волонтера, що приймає заявку)* contents SHALL be appended to `guests.system_comments`
+- Column `Y` *Numer telefonu (wolontariusza akceptującego zgłoszenie) | Номер телефону (волонтера, що приймає заявку)* contents SHALL be ignored.
 - Column `Z` *Oświadczenie znajomości reguł przebywania | Підтвердження знайомості правил перебування* contents SHALL be ignored
+
+Contents of columns appended to `system_comments` SHALL be properly annotated with a name of the column in Google Spreadsheet, and a note that this is a value that didn't make it through the data import process.
+
+Contents appended to fields `staff_comments`, `system_comments` and `owner_comments` SHALL be appended using new line (`\n`) separator.
 
 
 ## Application Architecture
