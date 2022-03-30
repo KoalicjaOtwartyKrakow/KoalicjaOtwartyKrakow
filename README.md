@@ -10,6 +10,14 @@
 
 In the wake of the Russian invasion of Ukraine, hundreds of thousands of people migrated to Poland. They have various needs, and one of them is a temporary place to live. The project is inteded to support backoffice processes of SalamLab's Crisis Point at Radziwiłłowska 3, Kraków.
 
+## Demo
+
+You can see the live demo of application here: https://apartments-dev.r3.salamlab.pl/.
+
+Since application now consist mainly of admin panel, you need to have an account in `@koalicjaotwartykrakow.pl` domain.
+
+Because advanced filtering development is in progress, temporarily metabase is deployed to fill that need. You can check it out here: https://query.apartments-dev.r3.salamlab.pl/
+
 ## Project Pages
 
 - [Glossary](https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/blob/main/GLOSSARY.md)
