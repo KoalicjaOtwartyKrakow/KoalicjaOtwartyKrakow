@@ -71,7 +71,8 @@ Mapping of tab `Automated Mieszkania` in `[salam] Mieszkania (Polska)` SHALL be 
 - Column `A` contents SHALL be appended to `acommodation_units.system_comments`
 - Column `B` *NASZE UWAGI* contents SHALL be appended to `acommodation_units.system_comments`
 - Column `C` *Na jak długo?*:
-- By default all values are going to be an empty string and shall be placed in `acommodation_units.for_how_long`. *TeamMember* SHOULD call a *Guest* to update the information.
+- Values matching a pattern `\d+\s?(d|w|m|y)` SHALL be placed in `acommodation_units.for_how_long`
+- Other values SHALL be appended to `acommodation_units.system_comments`
 - Column `D` *KIM jest juz zajety? (ID czlowieka)* contents SHALL be used to match appropriate *Guest*. Generated UUIDv4 GUID for current *AccommodationUnit* SHALL  be placed in `guest.accommodation_unit_id` of a *Guest* with matching Column A value.
 - Column `E` *WOLONTARIUSZ (kto się kontaktował)* contents will be used to set `workflow_status` to either `Available` if not empty, and `Needs verification` otherwise.
 - Column `F` *STATUS* contents SHALL be converted to `workflow_status` such that:
