@@ -1,5 +1,5 @@
 - Start Date: 2022-03-10
-- RFC PR: 
+- RFC PR: https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/pull/5
 - SafeShelter Issue: https://safeshelter.youtrack.cloud/issue/RFC-2
 
 # Summary
@@ -82,7 +82,7 @@ No impact.
 
 ### Security
 
-To mitigate the risk of data tampering of audit log, as well as data breach a separation of duties SHALL be implemented. The Services MUST NOT be able to read nor append to audit tables.
+To mitigate the risk of data tampering of audit log, as well as data breach a separation of duties SHALL be implemented. The Services MUST NOT be able to read nor append to audit tables. Solution MAY use same schema in order to achieve that given appropriate access rights are put in place to ensure Services are not able to append -- willingly or via sql-injection type of attacks -- to the audit tables.
 
 ## Infrastructure Architecture
 
