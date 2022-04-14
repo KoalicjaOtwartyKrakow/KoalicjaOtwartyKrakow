@@ -1,5 +1,5 @@
 - Start Date: 2022-03-22
-- RFC PR: 
+- RFC PR: https://github.com/KoalicjaOtwartyKrakow/KoalicjaOtwartyKrakow/pull/6
 - SafeShelter Issue: https://safeshelter.youtrack.cloud/issue/RFC-8
 
 
