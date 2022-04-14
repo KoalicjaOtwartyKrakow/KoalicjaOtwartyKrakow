@@ -75,7 +75,7 @@ Endpoints SHALL track changes to *AccommodationUnit* entity - including at least
 
 Endpoints SHALL track changes to *Host* entity - including at least the following fields: `full_name`, `email`, `phone_number`, `status`.
 
-Endpoints MAY track changes to other fields of abovementioned entities.
+Endpoints MAY track changes to other fields of aforementioned entities.
 
 #### API
 
