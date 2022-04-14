@@ -51,12 +51,11 @@ None.
 
 ## Data Architecture
 
-A new table SHALL be created, tracking at least:
-- who made a change
-- when the change was made
-- which entity was modified
-- value before the change
-- value after the change
+Following *SQLAlchemy-Continuum* patterns a new table SHALL be created to keep transactions records, including:
+- `issued_at` - a time when transaction was committed
+- `id` - an identifier referenced later by respective version tables
+
+For each entity subjected to audit, an additional `*_version` tables SHALL be created, tracking changes for selected fields.
 
 ## Application Architecture
 
@@ -70,7 +69,13 @@ No impact.
 
 ### Services
 
-Endpoints SHALL track changes to Guest entity - including at least field `guest.claimed_by` and `guest.accommodation_unit_id`. 
+Endpoints SHALL track changes to *Guest* entity - including at least the following fields: `claimed_by` and `accommodation_unit_id`.
+
+Endpoints SHALL track changes to *AccommodationUnit* entity - including at least the following fields: `host_id`, `city`, `zip`, `voivodeship`, `address_line`, `workflow_stauts`, and `verification_status`.
+
+Endpoints SHALL track changes to *Host* entity - including at least the following fields: `full_name`, `email`, `phone_number`, `status`.
+
+Endpoints MAY track changes to other fields of abovementioned entities.
 
 #### API
 
@@ -86,4 +91,4 @@ To mitigate the risk of data tampering of audit log, as well as data breach a se
 
 ## Infrastructure Architecture
 
-No impact.
+A non-superadmin user SHALL be created to be used by app. Credentials rotation SHALL be implemented for this newly created user.
