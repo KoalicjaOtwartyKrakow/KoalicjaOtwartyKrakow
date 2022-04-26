@@ -64,8 +64,9 @@ None.
 `HostVerificationSession` table SHALL be introduced, with following fields:
 - `id` an UUIDv4 compatible GUID
 - `host_id` - UUIDv4 compatible GUID of a *Host* we are verifying
-- `accommodation_id` - UUIDv4 compatible GUID of an *AccommodationUnit* that was added with the combined form
 - `conversation_id` - id of conversation on vendor side
+- `first_name` - nullable, first name as returned from the validation results
+- `last_name` - nullable, last name as returned from the validation results
 
 ## Application Architecture
 
